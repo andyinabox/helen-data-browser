@@ -1,14 +1,25 @@
 @img-width: 30vw;
 @margin: 3vw;
 
+*, *:before, *:after {
+  box-sizing: border-box;
+}
+
+html, body {
+	width: 100%;
+}
+
 body {
-	margin: @margin;
-	padding: 0;
+	padding: @margin;
+	margin: 0;
 	font-family: 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+	font-size: 15px;
+	line-height: 1.5em;
 }
 
 .entry {
 	clear: both;  
+	margin-bottom: 2em;
 
 	.image {
 		display: block;
@@ -32,11 +43,37 @@ body {
 	}
 
 	.title {
-
 	}
 
 	.description {
-		line-height: 1.4em;
 		max-width: 500px;
+		overflow: hidden;
 	}
 }
+
+@media screen and (max-device-width: 480px) {
+
+
+	body {
+		font-size: 30px;
+	}
+
+	.entry {
+
+		.image {
+			float: none;
+			max-width: 100%;
+			margin: 0;
+			margin-bottom: @margin;
+		}
+		.title, .description {
+			margin-left: 0;
+		}
+
+		.description {
+			max-width: 100%;
+		}
+	}
+
+}
+

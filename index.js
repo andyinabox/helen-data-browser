@@ -43,7 +43,7 @@ function update(json) {
 	console.log('update');
 	var rows = json.rows;
 	var html = rows.map(function(r) { return entryTpl(r.value); });
-	container.innerHTML = container.innerHTML+html;
+	container.innerHTML = container.innerHTML+html.join('');
 }
 
 function onScroll(e) {
