@@ -5,7 +5,7 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "start": "budo-less index.js -H localhost --live --open --less styles.less -- -t hbsfy",
+    "start": "budo-less index.js -H localhost --live --open --less style.less -- -t hbsfy",
     "build": "lessc style.less style.css; budo-demo index.js -c style.css -- -t hbsfy; ",
     "deploy": "npm run build; gh-pages -d dist; npm run clean",
     "clean": "rm -rf dist style.css"
@@ -24,7 +24,8 @@
     "budo-less": "^1.0.1",
     "gh-pages": "^0.11.0",
     "handlebars": "^4.0.5",
-    "hbsfy": "^2.7.0"
+    "hbsfy": "^2.7.0",
+    "less": "^2.7.1"
   },
   "repository": {
     "type": "git",
