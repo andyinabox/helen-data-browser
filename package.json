@@ -1,0 +1,34 @@
+{
+  "name": "helen-data-browser",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "budo-less index.js -H localhost --live --open --less styles.less -- -t hbsfy",
+    "build": "lessc style.less style.css; budo-demo index.js -c style.css -- -t hbsfy; ",
+    "deploy": "npm run build; gh-pages -d dist; npm run clean",
+    "clean": "rm -rf dist style.css"
+  },
+  "author": {
+    "name": "Andy Dayton",
+    "email": "amdayton@gmail.com",
+    "url": "http://andydayton.com/"
+  },
+  "dependencies": {
+    "throttle-debounce": "^1.0.1",
+    "whatwg-fetch": "^1.0.0"
+  },
+  "devDependencies": {
+    "budo-demo": "^0.1.1",
+    "budo-less": "^1.0.1",
+    "gh-pages": "^0.11.0",
+    "handlebars": "^4.0.5",
+    "hbsfy": "^2.7.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/andyinabox/helen-data-browser.git"
+  },
+  "homepage": "https://github.com/andyinabox/helen-data-browser"
+}

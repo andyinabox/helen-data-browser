@@ -1,0 +1,42 @@
+@img-width: 30vw;
+@margin: 3vw;
+
+body {
+	margin: @margin;
+	padding: 0;
+	font-family: 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+}
+
+.entry {
+	clear: both;  
+
+	.image {
+		display: block;
+		max-width: @img-width;
+		float: left;
+		margin-right: @margin;
+
+		img {
+			display: block;
+			width: 100%;
+		}
+	}
+
+	.title, .description {
+		margin-left: (@img-width + @margin);
+	}
+
+	.index {
+		color: #aaa;
+		font-weight: normal;
+	}
+
+	.title {
+
+	}
+
+	.description {
+		line-height: 1.4em;
+		max-width: 500px;
+	}
+}
