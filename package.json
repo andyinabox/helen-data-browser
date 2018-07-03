@@ -16,6 +16,7 @@
     "url": "http://andydayton.com/"
   },
   "dependencies": {
+    "filed": "^0.1.0",
     "throttle-debounce": "^1.0.1",
     "whatwg-fetch": "^1.0.0"
   },
