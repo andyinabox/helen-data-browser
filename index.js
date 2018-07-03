@@ -32,7 +32,7 @@ var entryTpl = require('./entry.hbs');
 
 // var COUCHDB = 'http://localhost:5984/'
 // var COUCHDB = 'https://amdayton.cloudant.com/'
-var COUCHDB = 'https://206.81.12.50:5984/';
+var COUCHDB = 'https://206.81.12.50:6984/';
 
 var opts = {
 	limit: 20,
