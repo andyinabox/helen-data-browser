@@ -1,8 +1,8 @@
-(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
 // hbsfy compiled Handlebars template
 var HandlebarsCompiler = require('hbsfy/runtime');
 module.exports = HandlebarsCompiler.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
-    var stack1, helper, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing, alias3="function", alias4=container.escapeExpression;
+    var stack1, helper, alias1=depth0 != null ? depth0 : (container.nullContext || {}), alias2=helpers.helperMissing, alias3="function", alias4=container.escapeExpression;
 
   return "<div class=\"entry\">\n	<a class=\"image\" href=\"https://www.flickr.com/photos/"
     + alias4(((helper = (helper = helpers.flickr_user || (depth0 != null ? depth0.flickr_user : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"flickr_user","hash":{},"data":data}) : helper)))
@@ -19,7 +19,7 @@ module.exports = HandlebarsCompiler.template({"compiler":[7,">= 4.0.0"],"main":f
     + "</div>\n</div>";
 },"useData":true});
 
-},{"hbsfy/runtime":25}],2:[function(require,module,exports){
+},{"hbsfy/runtime":22}],2:[function(require,module,exports){
 // fetch polyfill
 require('whatwg-fetch');
 
@@ -31,7 +31,8 @@ var throttle = require('throttle-debounce/throttle');
 var entryTpl = require('./entry.hbs');
 
 // var COUCHDB = 'http://localhost:5984/'
-var COUCHDB = 'https://amdayton.cloudant.com/'
+// var COUCHDB = 'https://amdayton.cloudant.com/'
+var COUCHDB = 'http://206.81.12.50:5984/';
 
 var opts = {
 	limit: 20,
@@ -86,186 +87,7 @@ function getWindowHeight() {
 }
 
 load(true);
-},{"./entry.hbs":1,"querystring":5,"throttle-debounce/throttle":26,"whatwg-fetch":27}],3:[function(require,module,exports){
-// Copyright Joyent, Inc. and other Node contributors.
-//
-// Permission is hereby granted, free of charge, to any person obtaining a
-// copy of this software and associated documentation files (the
-// "Software"), to deal in the Software without restriction, including
-// without limitation the rights to use, copy, modify, merge, publish,
-// distribute, sublicense, and/or sell copies of the Software, and to permit
-// persons to whom the Software is furnished to do so, subject to the
-// following conditions:
-//
-// The above copyright notice and this permission notice shall be included
-// in all copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
-// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
-// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
-// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
-// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
-// USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-'use strict';
-
-// If obj.hasOwnProperty has been overridden, then calling
-// obj.hasOwnProperty(prop) will break.
-// See: https://github.com/joyent/node/issues/1707
-function hasOwnProperty(obj, prop) {
-  return Object.prototype.hasOwnProperty.call(obj, prop);
-}
-
-module.exports = function(qs, sep, eq, options) {
-  sep = sep || '&';
-  eq = eq || '=';
-  var obj = {};
-
-  if (typeof qs !== 'string' || qs.length === 0) {
-    return obj;
-  }
-
-  var regexp = /\+/g;
-  qs = qs.split(sep);
-
-  var maxKeys = 1000;
-  if (options && typeof options.maxKeys === 'number') {
-    maxKeys = options.maxKeys;
-  }
-
-  var len = qs.length;
-  // maxKeys <= 0 means that we should not limit keys count
-  if (maxKeys > 0 && len > maxKeys) {
-    len = maxKeys;
-  }
-
-  for (var i = 0; i < len; ++i) {
-    var x = qs[i].replace(regexp, '%20'),
-        idx = x.indexOf(eq),
-        kstr, vstr, k, v;
-
-    if (idx >= 0) {
-      kstr = x.substr(0, idx);
-      vstr = x.substr(idx + 1);
-    } else {
-      kstr = x;
-      vstr = '';
-    }
-
-    k = decodeURIComponent(kstr);
-    v = decodeURIComponent(vstr);
-
-    if (!hasOwnProperty(obj, k)) {
-      obj[k] = v;
-    } else if (isArray(obj[k])) {
-      obj[k].push(v);
-    } else {
-      obj[k] = [obj[k], v];
-    }
-  }
-
-  return obj;
-};
-
-var isArray = Array.isArray || function (xs) {
-  return Object.prototype.toString.call(xs) === '[object Array]';
-};
-
-},{}],4:[function(require,module,exports){
-// Copyright Joyent, Inc. and other Node contributors.
-//
-// Permission is hereby granted, free of charge, to any person obtaining a
-// copy of this software and associated documentation files (the
-// "Software"), to deal in the Software without restriction, including
-// without limitation the rights to use, copy, modify, merge, publish,
-// distribute, sublicense, and/or sell copies of the Software, and to permit
-// persons to whom the Software is furnished to do so, subject to the
-// following conditions:
-//
-// The above copyright notice and this permission notice shall be included
-// in all copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
-// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
-// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
-// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
-// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
-// USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-'use strict';
-
-var stringifyPrimitive = function(v) {
-  switch (typeof v) {
-    case 'string':
-      return v;
-
-    case 'boolean':
-      return v ? 'true' : 'false';
-
-    case 'number':
-      return isFinite(v) ? v : '';
-
-    default:
-      return '';
-  }
-};
-
-module.exports = function(obj, sep, eq, name) {
-  sep = sep || '&';
-  eq = eq || '=';
-  if (obj === null) {
-    obj = undefined;
-  }
-
-  if (typeof obj === 'object') {
-    return map(objectKeys(obj), function(k) {
-      var ks = encodeURIComponent(stringifyPrimitive(k)) + eq;
-      if (isArray(obj[k])) {
-        return map(obj[k], function(v) {
-          return ks + encodeURIComponent(stringifyPrimitive(v));
-        }).join(sep);
-      } else {
-        return ks + encodeURIComponent(stringifyPrimitive(obj[k]));
-      }
-    }).join(sep);
-
-  }
-
-  if (!name) return '';
-  return encodeURIComponent(stringifyPrimitive(name)) + eq +
-         encodeURIComponent(stringifyPrimitive(obj));
-};
-
-var isArray = Array.isArray || function (xs) {
-  return Object.prototype.toString.call(xs) === '[object Array]';
-};
-
-function map (xs, f) {
-  if (xs.map) return xs.map(f);
-  var res = [];
-  for (var i = 0; i < xs.length; i++) {
-    res.push(f(xs[i], i));
-  }
-  return res;
-}
-
-var objectKeys = Object.keys || function (obj) {
-  var res = [];
-  for (var key in obj) {
-    if (Object.prototype.hasOwnProperty.call(obj, key)) res.push(key);
-  }
-  return res;
-};
-
-},{}],5:[function(require,module,exports){
-'use strict';
-
-exports.decode = exports.parse = require('./decode');
-exports.encode = exports.stringify = require('./encode');
-
-},{"./decode":3,"./encode":4}],6:[function(require,module,exports){
+},{"./entry.hbs":1,"querystring":25,"throttle-debounce/throttle":26,"whatwg-fetch":27}],3:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -333,7 +155,7 @@ exports['default'] = inst;
 module.exports = exports['default'];
 
 
-},{"./handlebars/base":7,"./handlebars/exception":10,"./handlebars/no-conflict":20,"./handlebars/runtime":21,"./handlebars/safe-string":22,"./handlebars/utils":23}],7:[function(require,module,exports){
+},{"./handlebars/base":4,"./handlebars/exception":7,"./handlebars/no-conflict":17,"./handlebars/runtime":18,"./handlebars/safe-string":19,"./handlebars/utils":20}],4:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -356,7 +178,7 @@ var _logger = require('./logger');
 
 var _logger2 = _interopRequireDefault(_logger);
 
-var VERSION = '4.0.5';
+var VERSION = '4.0.11';
 exports.VERSION = VERSION;
 var COMPILER_REVISION = 7;
 
@@ -439,7 +261,7 @@ exports.createFrame = _utils.createFrame;
 exports.logger = _logger2['default'];
 
 
-},{"./decorators":8,"./exception":10,"./helpers":11,"./logger":19,"./utils":23}],8:[function(require,module,exports){
+},{"./decorators":5,"./exception":7,"./helpers":8,"./logger":16,"./utils":20}],5:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -457,7 +279,7 @@ function registerDefaultDecorators(instance) {
 }
 
 
-},{"./decorators/inline":9}],9:[function(require,module,exports){
+},{"./decorators/inline":6}],6:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -488,7 +310,7 @@ exports['default'] = function (instance) {
 module.exports = exports['default'];
 
 
-},{"../utils":23}],10:[function(require,module,exports){
+},{"../utils":20}],7:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -518,9 +340,23 @@ function Exception(message, node) {
     Error.captureStackTrace(this, Exception);
   }
 
-  if (loc) {
-    this.lineNumber = line;
-    this.column = column;
+  try {
+    if (loc) {
+      this.lineNumber = line;
+
+      // Work around issue under safari where we can't directly set the column value
+      /* istanbul ignore next */
+      if (Object.defineProperty) {
+        Object.defineProperty(this, 'column', {
+          value: column,
+          enumerable: true
+        });
+      } else {
+        this.column = column;
+      }
+    }
+  } catch (nop) {
+    /* Ignore if the browser is very particular */
   }
 }
 
@@ -530,7 +366,7 @@ exports['default'] = Exception;
 module.exports = exports['default'];
 
 
-},{}],11:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -578,7 +414,7 @@ function registerDefaultHelpers(instance) {
 }
 
 
-},{"./helpers/block-helper-missing":12,"./helpers/each":13,"./helpers/helper-missing":14,"./helpers/if":15,"./helpers/log":16,"./helpers/lookup":17,"./helpers/with":18}],12:[function(require,module,exports){
+},{"./helpers/block-helper-missing":9,"./helpers/each":10,"./helpers/helper-missing":11,"./helpers/if":12,"./helpers/log":13,"./helpers/lookup":14,"./helpers/with":15}],9:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -619,7 +455,7 @@ exports['default'] = function (instance) {
 module.exports = exports['default'];
 
 
-},{"../utils":23}],13:[function(require,module,exports){
+},{"../utils":20}],10:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -715,7 +551,7 @@ exports['default'] = function (instance) {
 module.exports = exports['default'];
 
 
-},{"../exception":10,"../utils":23}],14:[function(require,module,exports){
+},{"../exception":7,"../utils":20}],11:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -742,7 +578,7 @@ exports['default'] = function (instance) {
 module.exports = exports['default'];
 
 
-},{"../exception":10}],15:[function(require,module,exports){
+},{"../exception":7}],12:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -773,7 +609,7 @@ exports['default'] = function (instance) {
 module.exports = exports['default'];
 
 
-},{"../utils":23}],16:[function(require,module,exports){
+},{"../utils":20}],13:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -801,7 +637,7 @@ exports['default'] = function (instance) {
 module.exports = exports['default'];
 
 
-},{}],17:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -815,7 +651,7 @@ exports['default'] = function (instance) {
 module.exports = exports['default'];
 
 
-},{}],18:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -850,7 +686,7 @@ exports['default'] = function (instance) {
 module.exports = exports['default'];
 
 
-},{"../utils":23}],19:[function(require,module,exports){
+},{"../utils":20}],16:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -899,7 +735,7 @@ exports['default'] = logger;
 module.exports = exports['default'];
 
 
-},{"./utils":23}],20:[function(require,module,exports){
+},{"./utils":20}],17:[function(require,module,exports){
 (function (global){
 /* global window */
 'use strict';
@@ -923,7 +759,7 @@ module.exports = exports['default'];
 
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],21:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -1071,6 +907,8 @@ function template(templateSpec, env) {
 
       return obj;
     },
+    // An empty object to use as replacement for null-contexts
+    nullContext: Object.seal({}),
 
     noop: env.VM.noop,
     compilerInfo: templateSpec.compiler
@@ -1089,7 +927,7 @@ function template(templateSpec, env) {
         blockParams = templateSpec.useBlockParams ? [] : undefined;
     if (templateSpec.useDepths) {
       if (options.depths) {
-        depths = context !== options.depths[0] ? [context].concat(options.depths) : options.depths;
+        depths = context != options.depths[0] ? [context].concat(options.depths) : options.depths;
       } else {
         depths = [context];
       }
@@ -1138,7 +976,7 @@ function wrapProgram(container, i, fn, data, declaredBlockParams, blockParams, d
     var options = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
 
     var currentDepths = depths;
-    if (depths && context !== depths[0]) {
+    if (depths && context != depths[0] && !(context === container.nullContext && depths[0] === null)) {
       currentDepths = [context].concat(depths);
     }
 
@@ -1169,6 +1007,8 @@ function resolvePartial(partial, context, options) {
 }
 
 function invokePartial(partial, context, options) {
+  // Use the current closure context to save the partial-block if this partial
+  var currentPartialBlock = options.data && options.data['partial-block'];
   options.partial = true;
   if (options.ids) {
     options.data.contextPath = options.ids[0] || options.data.contextPath;
@@ -1176,12 +1016,23 @@ function invokePartial(partial, context, options) {
 
   var partialBlock = undefined;
   if (options.fn && options.fn !== noop) {
-    options.data = _base.createFrame(options.data);
-    partialBlock = options.data['partial-block'] = options.fn;
+    (function () {
+      options.data = _base.createFrame(options.data);
+      // Wrapper function to get access to currentPartialBlock from the closure
+      var fn = options.fn;
+      partialBlock = options.data['partial-block'] = function partialBlockWrapper(context) {
+        var options = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
 
-    if (partialBlock.partials) {
-      options.partials = Utils.extend({}, options.partials, partialBlock.partials);
-    }
+        // Restore the partial-block from the closure for the execution of the block
+        // i.e. the part inside the block of the partial call.
+        options.data = _base.createFrame(options.data);
+        options.data['partial-block'] = currentPartialBlock;
+        return fn(context, options);
+      };
+      if (fn.partials) {
+        options.partials = Utils.extend({}, options.partials, fn.partials);
+      }
+    })();
   }
 
   if (partial === undefined && partialBlock) {
@@ -1217,7 +1068,7 @@ function executeDecorators(fn, prog, container, depths, data, blockParams) {
 }
 
 
-},{"./base":7,"./exception":10,"./utils":23}],22:[function(require,module,exports){
+},{"./base":4,"./exception":7,"./utils":20}],19:[function(require,module,exports){
 // Build out our basic SafeString type
 'use strict';
 
@@ -1234,7 +1085,7 @@ exports['default'] = SafeString;
 module.exports = exports['default'];
 
 
-},{}],23:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -1360,15 +1211,194 @@ function appendContextPath(contextPath, id) {
 }
 
 
-},{}],24:[function(require,module,exports){
+},{}],21:[function(require,module,exports){
 // Create a simple path alias to allow browserify to resolve
 // the runtime on a supported path.
 module.exports = require('./dist/cjs/handlebars.runtime')['default'];
 
-},{"./dist/cjs/handlebars.runtime":6}],25:[function(require,module,exports){
+},{"./dist/cjs/handlebars.runtime":3}],22:[function(require,module,exports){
 module.exports = require("handlebars/runtime")["default"];
 
-},{"handlebars/runtime":24}],26:[function(require,module,exports){
+},{"handlebars/runtime":21}],23:[function(require,module,exports){
+// Copyright Joyent, Inc. and other Node contributors.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a
+// copy of this software and associated documentation files (the
+// "Software"), to deal in the Software without restriction, including
+// without limitation the rights to use, copy, modify, merge, publish,
+// distribute, sublicense, and/or sell copies of the Software, and to permit
+// persons to whom the Software is furnished to do so, subject to the
+// following conditions:
+//
+// The above copyright notice and this permission notice shall be included
+// in all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
+// USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+'use strict';
+
+// If obj.hasOwnProperty has been overridden, then calling
+// obj.hasOwnProperty(prop) will break.
+// See: https://github.com/joyent/node/issues/1707
+function hasOwnProperty(obj, prop) {
+  return Object.prototype.hasOwnProperty.call(obj, prop);
+}
+
+module.exports = function(qs, sep, eq, options) {
+  sep = sep || '&';
+  eq = eq || '=';
+  var obj = {};
+
+  if (typeof qs !== 'string' || qs.length === 0) {
+    return obj;
+  }
+
+  var regexp = /\+/g;
+  qs = qs.split(sep);
+
+  var maxKeys = 1000;
+  if (options && typeof options.maxKeys === 'number') {
+    maxKeys = options.maxKeys;
+  }
+
+  var len = qs.length;
+  // maxKeys <= 0 means that we should not limit keys count
+  if (maxKeys > 0 && len > maxKeys) {
+    len = maxKeys;
+  }
+
+  for (var i = 0; i < len; ++i) {
+    var x = qs[i].replace(regexp, '%20'),
+        idx = x.indexOf(eq),
+        kstr, vstr, k, v;
+
+    if (idx >= 0) {
+      kstr = x.substr(0, idx);
+      vstr = x.substr(idx + 1);
+    } else {
+      kstr = x;
+      vstr = '';
+    }
+
+    k = decodeURIComponent(kstr);
+    v = decodeURIComponent(vstr);
+
+    if (!hasOwnProperty(obj, k)) {
+      obj[k] = v;
+    } else if (isArray(obj[k])) {
+      obj[k].push(v);
+    } else {
+      obj[k] = [obj[k], v];
+    }
+  }
+
+  return obj;
+};
+
+var isArray = Array.isArray || function (xs) {
+  return Object.prototype.toString.call(xs) === '[object Array]';
+};
+
+},{}],24:[function(require,module,exports){
+// Copyright Joyent, Inc. and other Node contributors.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a
+// copy of this software and associated documentation files (the
+// "Software"), to deal in the Software without restriction, including
+// without limitation the rights to use, copy, modify, merge, publish,
+// distribute, sublicense, and/or sell copies of the Software, and to permit
+// persons to whom the Software is furnished to do so, subject to the
+// following conditions:
+//
+// The above copyright notice and this permission notice shall be included
+// in all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
+// USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+'use strict';
+
+var stringifyPrimitive = function(v) {
+  switch (typeof v) {
+    case 'string':
+      return v;
+
+    case 'boolean':
+      return v ? 'true' : 'false';
+
+    case 'number':
+      return isFinite(v) ? v : '';
+
+    default:
+      return '';
+  }
+};
+
+module.exports = function(obj, sep, eq, name) {
+  sep = sep || '&';
+  eq = eq || '=';
+  if (obj === null) {
+    obj = undefined;
+  }
+
+  if (typeof obj === 'object') {
+    return map(objectKeys(obj), function(k) {
+      var ks = encodeURIComponent(stringifyPrimitive(k)) + eq;
+      if (isArray(obj[k])) {
+        return map(obj[k], function(v) {
+          return ks + encodeURIComponent(stringifyPrimitive(v));
+        }).join(sep);
+      } else {
+        return ks + encodeURIComponent(stringifyPrimitive(obj[k]));
+      }
+    }).join(sep);
+
+  }
+
+  if (!name) return '';
+  return encodeURIComponent(stringifyPrimitive(name)) + eq +
+         encodeURIComponent(stringifyPrimitive(obj));
+};
+
+var isArray = Array.isArray || function (xs) {
+  return Object.prototype.toString.call(xs) === '[object Array]';
+};
+
+function map (xs, f) {
+  if (xs.map) return xs.map(f);
+  var res = [];
+  for (var i = 0; i < xs.length; i++) {
+    res.push(f(xs[i], i));
+  }
+  return res;
+}
+
+var objectKeys = Object.keys || function (obj) {
+  var res = [];
+  for (var key in obj) {
+    if (Object.prototype.hasOwnProperty.call(obj, key)) res.push(key);
+  }
+  return res;
+};
+
+},{}],25:[function(require,module,exports){
+'use strict';
+
+exports.decode = exports.parse = require('./decode');
+exports.encode = exports.stringify = require('./encode');
+
+},{"./decode":23,"./encode":24}],26:[function(require,module,exports){
 /* eslint-disable no-undefined,no-param-reassign,no-shadow */
 
 /**
@@ -1376,13 +1406,13 @@ module.exports = require("handlebars/runtime")["default"];
  * execution of handlers on events like resize and scroll.
  *
  * @param  {Number}    delay          A zero-or-greater delay in milliseconds. For event callbacks, values around 100 or 250 (or even higher) are most useful.
- * @param  {Boolean}   noTrailing     Optional, defaults to false. If noTrailing is true, callback will only execute every `delay` milliseconds while the
+ * @param  {Boolean}   [noTrailing]   Optional, defaults to false. If noTrailing is true, callback will only execute every `delay` milliseconds while the
  *                                    throttled-function is being called. If noTrailing is false or unspecified, callback will be executed one final time
  *                                    after the last throttled-function call. (After the throttled-function has not been called for `delay` milliseconds,
  *                                    the internal counter is reset)
  * @param  {Function}  callback       A function to be executed after delay milliseconds. The `this` context and all arguments are passed through, as-is,
  *                                    to `callback` when the throttled-function is executed.
- * @param  {Boolean}   debounceMode   If `debounceMode` is true (at begin), schedule `clear` to execute after `delay` ms. If `debounceMode` is false (at end),
+ * @param  {Boolean}   [debounceMode] If `debounceMode` is true (at begin), schedule `clear` to execute after `delay` ms. If `debounceMode` is false (at end),
  *                                    schedule `callback` to execute after `delay` ms.
  *
  * @return {Function}  A new, throttled, function.
@@ -1482,6 +1512,28 @@ module.exports = function ( delay, noTrailing, callback, debounceMode ) {
     })(),
     formData: 'FormData' in self,
     arrayBuffer: 'ArrayBuffer' in self
+  }
+
+  if (support.arrayBuffer) {
+    var viewClasses = [
+      '[object Int8Array]',
+      '[object Uint8Array]',
+      '[object Uint8ClampedArray]',
+      '[object Int16Array]',
+      '[object Uint16Array]',
+      '[object Int32Array]',
+      '[object Uint32Array]',
+      '[object Float32Array]',
+      '[object Float64Array]'
+    ]
+
+    var isDataView = function(obj) {
+      return obj && DataView.prototype.isPrototypeOf(obj)
+    }
+
+    var isArrayBufferView = ArrayBuffer.isView || function(obj) {
+      return obj && viewClasses.indexOf(Object.prototype.toString.call(obj)) > -1
+    }
   }
 
   function normalizeName(name) {
@@ -1616,14 +1668,36 @@ module.exports = function ( delay, noTrailing, callback, debounceMode ) {
 
   function readBlobAsArrayBuffer(blob) {
     var reader = new FileReader()
+    var promise = fileReaderReady(reader)
     reader.readAsArrayBuffer(blob)
-    return fileReaderReady(reader)
+    return promise
   }
 
   function readBlobAsText(blob) {
     var reader = new FileReader()
+    var promise = fileReaderReady(reader)
     reader.readAsText(blob)
-    return fileReaderReady(reader)
+    return promise
+  }
+
+  function readArrayBufferAsText(buf) {
+    var view = new Uint8Array(buf)
+    var chars = new Array(view.length)
+
+    for (var i = 0; i < view.length; i++) {
+      chars[i] = String.fromCharCode(view[i])
+    }
+    return chars.join('')
+  }
+
+  function bufferClone(buf) {
+    if (buf.slice) {
+      return buf.slice(0)
+    } else {
+      var view = new Uint8Array(buf.byteLength)
+      view.set(new Uint8Array(buf))
+      return view.buffer
+    }
   }
 
   function Body() {
@@ -1631,7 +1705,9 @@ module.exports = function ( delay, noTrailing, callback, debounceMode ) {
 
     this._initBody = function(body) {
       this._bodyInit = body
-      if (typeof body === 'string') {
+      if (!body) {
+        this._bodyText = ''
+      } else if (typeof body === 'string') {
         this._bodyText = body
       } else if (support.blob && Blob.prototype.isPrototypeOf(body)) {
         this._bodyBlob = body
@@ -1639,11 +1715,12 @@ module.exports = function ( delay, noTrailing, callback, debounceMode ) {
         this._bodyFormData = body
       } else if (support.searchParams && URLSearchParams.prototype.isPrototypeOf(body)) {
         this._bodyText = body.toString()
-      } else if (!body) {
-        this._bodyText = ''
-      } else if (support.arrayBuffer && ArrayBuffer.prototype.isPrototypeOf(body)) {
-        // Only support ArrayBuffers for POST method.
-        // Receiving ArrayBuffers happens via Blobs, instead.
+      } else if (support.arrayBuffer && support.blob && isDataView(body)) {
+        this._bodyArrayBuffer = bufferClone(body.buffer)
+        // IE 10-11 can't handle a DataView body.
+        this._bodyInit = new Blob([this._bodyArrayBuffer])
+      } else if (support.arrayBuffer && (ArrayBuffer.prototype.isPrototypeOf(body) || isArrayBufferView(body))) {
+        this._bodyArrayBuffer = bufferClone(body)
       } else {
         throw new Error('unsupported BodyInit type')
       }
@@ -1668,6 +1745,8 @@ module.exports = function ( delay, noTrailing, callback, debounceMode ) {
 
         if (this._bodyBlob) {
           return Promise.resolve(this._bodyBlob)
+        } else if (this._bodyArrayBuffer) {
+          return Promise.resolve(new Blob([this._bodyArrayBuffer]))
         } else if (this._bodyFormData) {
           throw new Error('could not read FormData body as blob')
         } else {
@@ -1676,27 +1755,28 @@ module.exports = function ( delay, noTrailing, callback, debounceMode ) {
       }
 
       this.arrayBuffer = function() {
-        return this.blob().then(readBlobAsArrayBuffer)
-      }
-
-      this.text = function() {
-        var rejected = consumed(this)
-        if (rejected) {
-          return rejected
-        }
-
-        if (this._bodyBlob) {
-          return readBlobAsText(this._bodyBlob)
-        } else if (this._bodyFormData) {
-          throw new Error('could not read FormData body as text')
+        if (this._bodyArrayBuffer) {
+          return consumed(this) || Promise.resolve(this._bodyArrayBuffer)
         } else {
-          return Promise.resolve(this._bodyText)
+          return this.blob().then(readBlobAsArrayBuffer)
         }
       }
-    } else {
-      this.text = function() {
-        var rejected = consumed(this)
-        return rejected ? rejected : Promise.resolve(this._bodyText)
+    }
+
+    this.text = function() {
+      var rejected = consumed(this)
+      if (rejected) {
+        return rejected
+      }
+
+      if (this._bodyBlob) {
+        return readBlobAsText(this._bodyBlob)
+      } else if (this._bodyArrayBuffer) {
+        return Promise.resolve(readArrayBufferAsText(this._bodyArrayBuffer))
+      } else if (this._bodyFormData) {
+        throw new Error('could not read FormData body as text')
+      } else {
+        return Promise.resolve(this._bodyText)
       }
     }
 
@@ -1724,7 +1804,10 @@ module.exports = function ( delay, noTrailing, callback, debounceMode ) {
   function Request(input, options) {
     options = options || {}
     var body = options.body
-    if (Request.prototype.isPrototypeOf(input)) {
+
+    if (typeof input === 'string') {
+      this.url = input
+    } else {
       if (input.bodyUsed) {
         throw new TypeError('Already read')
       }
@@ -1735,12 +1818,10 @@ module.exports = function ( delay, noTrailing, callback, debounceMode ) {
       }
       this.method = input.method
       this.mode = input.mode
-      if (!body) {
+      if (!body && input._bodyInit != null) {
         body = input._bodyInit
         input.bodyUsed = true
       }
-    } else {
-      this.url = input
     }
 
     this.credentials = options.credentials || this.credentials || 'omit'
@@ -1758,7 +1839,7 @@ module.exports = function ( delay, noTrailing, callback, debounceMode ) {
   }
 
   Request.prototype.clone = function() {
-    return new Request(this)
+    return new Request(this, { body: this._bodyInit })
   }
 
   function decode(body) {
@@ -1774,16 +1855,17 @@ module.exports = function ( delay, noTrailing, callback, debounceMode ) {
     return form
   }
 
-  function headers(xhr) {
-    var head = new Headers()
-    var pairs = (xhr.getAllResponseHeaders() || '').trim().split('\n')
-    pairs.forEach(function(header) {
-      var split = header.trim().split(':')
-      var key = split.shift().trim()
-      var value = split.join(':').trim()
-      head.append(key, value)
+  function parseHeaders(rawHeaders) {
+    var headers = new Headers()
+    rawHeaders.split('\r\n').forEach(function(line) {
+      var parts = line.split(':')
+      var key = parts.shift().trim()
+      if (key) {
+        var value = parts.join(':').trim()
+        headers.append(key, value)
+      }
     })
-    return head
+    return headers
   }
 
   Body.call(Request.prototype)
@@ -1794,10 +1876,10 @@ module.exports = function ( delay, noTrailing, callback, debounceMode ) {
     }
 
     this.type = 'default'
-    this.status = options.status
+    this.status = 'status' in options ? options.status : 200
     this.ok = this.status >= 200 && this.status < 300
-    this.statusText = options.statusText
-    this.headers = options.headers instanceof Headers ? options.headers : new Headers(options.headers)
+    this.statusText = 'statusText' in options ? options.statusText : 'OK'
+    this.headers = new Headers(options.headers)
     this.url = options.url || ''
     this._initBody(bodyInit)
   }
@@ -1835,35 +1917,16 @@ module.exports = function ( delay, noTrailing, callback, debounceMode ) {
 
   self.fetch = function(input, init) {
     return new Promise(function(resolve, reject) {
-      var request
-      if (Request.prototype.isPrototypeOf(input) && !init) {
-        request = input
-      } else {
-        request = new Request(input, init)
-      }
-
+      var request = new Request(input, init)
       var xhr = new XMLHttpRequest()
-
-      function responseURL() {
-        if ('responseURL' in xhr) {
-          return xhr.responseURL
-        }
-
-        // Avoid security warnings on getResponseHeader when not allowed by CORS
-        if (/^X-Request-URL:/m.test(xhr.getAllResponseHeaders())) {
-          return xhr.getResponseHeader('X-Request-URL')
-        }
-
-        return
-      }
 
       xhr.onload = function() {
         var options = {
           status: xhr.status,
           statusText: xhr.statusText,
-          headers: headers(xhr),
-          url: responseURL()
+          headers: parseHeaders(xhr.getAllResponseHeaders() || '')
         }
+        options.url = 'responseURL' in xhr ? xhr.responseURL : options.headers.get('X-Request-URL')
         var body = 'response' in xhr ? xhr.response : xhr.responseText
         resolve(new Response(body, options))
       }
